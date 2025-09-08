@@ -7,6 +7,8 @@ package numeric;
 * @version 1.0
 * File: Factorial.java
 * Created: Sep 2025
+* Summary of Modifications: Initial version
+* ©Copyright Cedarville University, its Computer Science faculty, and the author.
 *
 * Description: This class computes the factorial of a non-negative integer iteratively.
 */
