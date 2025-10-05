@@ -8,7 +8,7 @@ import java.util.Scanner;
 *
 * @author Brandon Aikman
 * @version 1.0
-* File: rpn.java
+* File: RPN.java
 * Created: Oct 2025
 * Summary of Modifications: Initial version
 * ©Copyright Cedarville University, its Computer Science faculty, and the author.
@@ -16,15 +16,15 @@ import java.util.Scanner;
 * Description: This class calculates the value of a string in reverse-Polish notation.
 */
 
-public class rpn {
+public class RPN {
 
     /**
-     * rpnCalculate function, which calculates the value of a string in reverse-Polish notation.
+     * RPNCalculate method, which calculates the value of a string in reverse-Polish notation.
      *
      * @param input String to calculate the value of.
-     * @return the result of the rpnCalculate function.
+     * @return the result of the RPNCalculate function.
      */
-    public static double rpnCalculate(String input) {
+    public static double RPNCalculate(String input) {
         Stack<Double> stk = new Stack<>();  // Stack to hold doubles
         Scanner scan = new Scanner(input);  // Scanner that parses input string
         double inp1, inp2;                  // Double holders for two inputs to any operation
