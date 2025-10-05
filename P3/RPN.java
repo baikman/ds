@@ -34,13 +34,11 @@ public class RPN {
             // Check if the next value is an int or double
             if (scan.hasNextInt() || scan.hasNextDouble()) {
                 next = scan.next();
-                System.out.println(next);
                 stk.push(Double.parseDouble(next));
             }
             // If not int or double, check if it is an operator or invalid symbol
             else {
                 next = scan.next();
-                System.out.println(next);
                 if (next.equals("+")) {
                     if (stk.size() < 2) throw new InvalidRPNString("Tried to add two numbers with less than two items in the stack.");
                     else {
