@@ -29,6 +29,8 @@ public class RPN {
         Scanner scan = new Scanner(input);  // Scanner that parses input string
         double inp1, inp2;                  // Double holders for two inputs to any operation
         String next;                        // String to hold the next value from scan
+
+        if (input == "") throw new InvalidRPNString("Tried to perform calculation on empty string.");
  
         while (scan.hasNext()) {
             // Check if the next value is an int or double

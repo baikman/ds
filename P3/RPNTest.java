@@ -133,4 +133,12 @@ public class RPNTest {
         });
         assertEquals("Invalid size remaining on the stack.", exception.getMessage());
     }
+
+    @Test
+    public void emptyString() {
+        InvalidRPNString exception = assertThrows(InvalidRPNString.class, () -> {
+            RPN.RPNCalculate("");
+        });
+        assertEquals("Tried to perform calculation on empty string.", exception.getMessage());
+    }
 }
