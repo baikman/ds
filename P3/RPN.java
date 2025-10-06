@@ -76,6 +76,6 @@ public class RPN {
         
         // Return the only value on stack, if the size is one        
         if (stk.size() == 1) return stk.pop(); 
-        else throw new InvalidRPNString("Invalid size");
+        else throw new InvalidRPNString("Invalid size remaining on the stack.");
     }
 }

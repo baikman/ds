@@ -19,8 +19,38 @@ import org.junit.Test;
 
 public class RPNTest {
     @Test
-    public void testComplex() {
+    public void testComplex1() {
         assertEquals(-146.3, RPN.RPNCalculate("23.3 5 16.2 + 8 * -"), 0.00001);
+    }
+
+    @Test
+    public void testComplex2() {
+        assertEquals(40.0, RPN.RPNCalculate("5 5 5 5 5 5 5 5 + + + + + + +"), 0.00001);
+    }
+
+    @Test
+    public void testComplex3() {
+        assertEquals(31250.0, RPN.RPNCalculate("2 5 5 5 5 5 5 * * * * * *"), 0.00001);
+    }
+
+    @Test
+    public void testComplex4() {
+        assertEquals(-2.0, RPN.RPNCalculate("0 1 1 1 1 1 1 1 1 1 1 + - + - + - + - + -"), 0.00001);
+    }
+
+    @Test
+    public void testComplex5() {
+        assertEquals(147.0, RPN.RPNCalculate("1 2 3 4 5 6 7 8 9 + - * / / * - +"), 0.00001);
+    }
+
+    @Test 
+    public void testRepeatedAddition() {
+        assertEquals(9.0, RPN.RPNCalculate("3 3 3 + +"), 0.00001);
+    }
+
+    @Test 
+    public void testRepeatedAddition2() {
+        assertEquals(18.0, RPN.RPNCalculate("3 3 3 3 3 3 + + + + +"), 0.00001);
     }
 
     @Test
@@ -94,5 +124,13 @@ public class RPNTest {
             RPN.RPNCalculate("a b +");
         });
         assertEquals("Invalid input, expected a number, +, -, *, or /.", exception.getMessage());
+    }
+
+    @Test
+    public void incorrectStackSize() {
+        InvalidRPNString exception = assertThrows(InvalidRPNString.class, () -> {
+            RPN.RPNCalculate("3 3 3 +");
+        });
+        assertEquals("Invalid size remaining on the stack.", exception.getMessage());
     }
 }
