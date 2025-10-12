@@ -31,18 +31,21 @@ public class ArrayQueue<E> implements Queue<E> {
     }
     
     public void enqueue(E element) throws InvalidDataException {
-        if (!(element instanceof E)) throw new InvalidDataException("invalid data test");
+        if (element == null) throw new InvalidDataException("invalid data test");
         if (size == arr.length) {
+            int i = front;
             E[] newArr = (E[])new Object[arr.length * 2];
-            for (int i = 0; i < size; i++) newArr[i] = arr[i];
+            for (i = 0; i < size; i++) {
+                newArr[i] = dequeue();
+                size++;
+            }
             arr = newArr;
-            for (int i = size; i > 0; i--) arr[i+1] = arr[i];
-            arr[0] = element;
+            arr[size] = element;
+            front = 0;
         } else {
             int next = (front + size) % arr.length;
             arr[next] = element;
         }
-        
         size++;
     }
 
