@@ -22,17 +22,30 @@ public class ArrayQueue<E> implements Queue<E> {
     private int front = 0;
     private int size = 0;
 
+    /**
+     * ArrayQueue constructor, which constructs an array based on the DEFAULT_CAPACITY (8).
+     *
+     */
     public ArrayQueue() {
         this(DEFAULT_CAPACITY);
     }
 
+    /**
+     * ArrayQueue constructor, which constructs an array based on integer capacity passed to it.
+     * 
+     * @param newCapacity new capacity for queue.
+     */
     public ArrayQueue(int newCapacity) {
         arr = (E[])new Object[newCapacity];
     }
     
+    /**
+     * enqueue method, which enqueues a new element onto the queue.
+     *
+     * @param element Element to enque.
+     */
     public void enqueue(E element) throws InvalidDataException {
         if (element == null) throw new InvalidDataException("Tried inserting null element.");
-        if (!(element instanceof E)) throw new InvalidDataException("Cannot enqueue element of different type.");
         if (size == arr.length) {
             int i = front;
             E[] newArr = (E[])new Object[arr.length * 2];
@@ -50,6 +63,11 @@ public class ArrayQueue<E> implements Queue<E> {
         size++;
     }
 
+    /**
+     * dequeue method, which returns and dequeues the last element off the queue.
+     *
+     * @return E returns element dequeued.
+     */
     public E dequeue() throws QueueEmptyException {
         if (isEmpty()) throw new QueueEmptyException("Tried to deque on empty queue.");
         E remove = arr[front];
@@ -59,15 +77,30 @@ public class ArrayQueue<E> implements Queue<E> {
         return remove;
     }
 
+    /**
+     * front method, which returns the last element from the queue.
+     *
+     * @return E returns front element.
+     */
     public E front() throws QueueEmptyException {
         if (isEmpty()) throw new QueueEmptyException("Tried to front on empty queue.");
         return arr[front];
     }
 
+    /**
+     * size method, which returns the size of the queue.
+     *
+     * @return int returns queue size.
+     */
     public int size() {
         return size;
     }
 
+     /**
+     * isEmpty method, which returns the status of the queue;s emptiness.
+     *
+     * @return boolean returns condition of emtpiness of queue.
+     */
     public boolean isEmpty() {
         return (size == 0);
     }
