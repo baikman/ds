@@ -31,7 +31,8 @@ public class ArrayQueue<E> implements Queue<E> {
     }
     
     public void enqueue(E element) throws InvalidDataException {
-        if (element == null) throw new InvalidDataException("invalid data test");
+        if (element == null) throw new InvalidDataException("Tried inserting null element.");
+        if (!(element instanceof E)) throw new InvalidDataException("Cannot enqueue element of different type.");
         if (size == arr.length) {
             int i = front;
             E[] newArr = (E[])new Object[arr.length * 2];
@@ -50,7 +51,7 @@ public class ArrayQueue<E> implements Queue<E> {
     }
 
     public E dequeue() throws QueueEmptyException {
-        if (isEmpty()) throw new QueueEmptyException("tried to deque on empty queue");
+        if (isEmpty()) throw new QueueEmptyException("Tried to deque on empty queue.");
         E remove = arr[front];
         arr[front] = null;
         front = (front + 1) % arr.length;
@@ -59,7 +60,7 @@ public class ArrayQueue<E> implements Queue<E> {
     }
 
     public E front() throws QueueEmptyException {
-        if (isEmpty()) throw new QueueEmptyException("tried to yield front on empty queue");
+        if (isEmpty()) throw new QueueEmptyException("Tried to front on empty queue.");
         return arr[front];
     }
 

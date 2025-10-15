@@ -2,10 +2,9 @@ package P4;
 
 import static org.junit.Assert.*;
 import org.junit.Test;
-
 /**
- * Extended JUnit 4 tests for the ArrayQueue implementation.
- * Exercises enqueue/dequeue, front, size/isEmpty, wraparound, resizing, and edge cases.
+ * Comprehensive JUnit 5 tests for the ArrayQueue implementation.
+ * All exception tests assert the exact exception message via assertEquals("expected", ex.getMessage()).
  */
 public class ArrayQueueTest {
 
@@ -34,34 +33,31 @@ public class ArrayQueueTest {
     @Test
     public void dequeueEmptyThrows() {
         ArrayQueue<String> q = new ArrayQueue<>();
-        try {
-            q.dequeue();
-            fail("Expected QueueEmptyException");
-        } catch (QueueEmptyException ex) {
-            assertTrue(ex.getMessage().toLowerCase().contains("empty"));
-        }
+        QueueEmptyException ex = assertThrows(QueueEmptyException.class, q::dequeue);
+        assertEquals("Tried to deque on empty queue.", ex.getMessage());
+    }
+
+    @Test
+    public void wrongTypeThrows() {
+        // Must use Object so the compiler allows inserting different runtime types.
+        ArrayQueue<Object> q = new ArrayQueue<>();
+        q.enqueue(5); // Integer
+        InvalidDataException ex = assertThrows(InvalidDataException.class, () -> q.enqueue("test")); // String
+        assertEquals("Cannot enqueue element of different type.", ex.getMessage());
     }
 
     @Test
     public void frontEmptyThrows() {
         ArrayQueue<Double> q = new ArrayQueue<>();
-        try {
-            q.front();
-            fail("Expected QueueEmptyException");
-        } catch (QueueEmptyException ex) {
-            assertTrue(ex.getMessage().toLowerCase().contains("empty"));
-        }
+        QueueEmptyException ex = assertThrows(QueueEmptyException.class, q::front);
+        assertEquals("Tried to front on empty queue.", ex.getMessage());
     }
 
     @Test
-    public void invalidDataEnqueueThrows() {
+    public void invalidDataEnqueueThrows_onNull() {
         ArrayQueue<Object> q = new ArrayQueue<>();
-        try {
-            q.enqueue(null);
-            fail("Expected InvalidDataException");
-        } catch (InvalidDataException ex) {
-            assertNotNull(ex.getMessage());
-        }
+        InvalidDataException ex = assertThrows(InvalidDataException.class, () -> q.enqueue(null));
+        assertEquals("Tried inserting null element.", ex.getMessage());
     }
 
     @Test
@@ -93,7 +89,7 @@ public class ArrayQueueTest {
         ArrayQueue<Integer> q = new ArrayQueue<>(2);
         q.enqueue(10);
         q.enqueue(20);
-        q.enqueue(30); // triggers resize path
+        q.enqueue(30); // triggers resize path (implementation-specific)
 
         assertEquals(3, q.size());
         assertEquals(Integer.valueOf(10), q.dequeue());
@@ -266,38 +262,24 @@ public class ArrayQueueTest {
     }
 
     @Test
-    public void dequeueReturnsNullIfNullWasEnqueued_whenAllowed() throws Exception {
-        // Note: implementation checks instanceof E and currently throws on null enqueue.
-        // This test documents expected behavior if a queue allowed nulls; here we verify that
-        // the implementation indeed throws on null (the safety check is tested elsewhere).
+    public void dequeueReturnsNullIfNullWasEnqueued_whenAllowed_butImplementationThrows() throws Exception {
+        // Implementation throws on null enqueue; test verifies that exact message
         ArrayQueue<Object> q = new ArrayQueue<>();
-        try {
-            q.enqueue(null);
-            fail("Expected InvalidDataException due to null enqueue");
-        } catch (InvalidDataException ex) {
-            // expected - message tested already in invalidDataEnqueueThrows
-            assertNotNull(ex.getMessage());
-        }
+        InvalidDataException ex = assertThrows(InvalidDataException.class, () -> q.enqueue(null));
+        assertEquals("Tried inserting null element.", ex.getMessage());
     }
 
     @Test
     public void consecutiveDequeuesAfterEmptyThrowEachTime() {
         ArrayQueue<Integer> q = new ArrayQueue<>();
-        try {
-            q.dequeue();
-            fail("Expected QueueEmptyException");
-        } catch (QueueEmptyException ex) {
-            assertTrue(ex.getMessage().toLowerCase().contains("empty"));
-        }
+        QueueEmptyException ex1 = assertThrows(QueueEmptyException.class, q::dequeue);
+        assertEquals("Tried to deque on empty queue.", ex1.getMessage());
 
         // still empty - another dequeue should also throw
-        try {
-            q.dequeue();
-            fail("Expected QueueEmptyException");
-        } catch (QueueEmptyException ex) {
-            assertTrue(ex.getMessage().toLowerCase().contains("empty"));
-        }
+        QueueEmptyException ex2 = assertThrows(QueueEmptyException.class, q::dequeue);
+        assertEquals("Tried to deque on empty queue.", ex2.getMessage());
     }
+
     @Test
     public void customTypeEnqueueDequeue() throws Exception {
         class Point {
@@ -323,20 +305,13 @@ public class ArrayQueueTest {
     }
 
     /**
-     * Test that enqueue(null) throws InvalidDataException with a non-null message.
+     * Test that enqueue(null) throws InvalidDataException with an exact message.
      */
     @Test
-    public void enqueueNullThrowsInvalidDataException_withMessage() {
+    public void enqueueNullThrowsInvalidDataException_withExactMessage() {
         ArrayQueue<String> q = new ArrayQueue<>();
-        try {
-            q.enqueue(null);
-            fail("Expected InvalidDataException when enqueuing null");
-        } catch (InvalidDataException ex) {
-            assertNotNull("InvalidDataException should contain a message", ex.getMessage());
-            assertTrue("Message should mention invalid/null or similar",
-                ex.getMessage().toLowerCase().contains("invalid")
-                || ex.getMessage().toLowerCase().contains("null"));
-        }
+        InvalidDataException ex = assertThrows(InvalidDataException.class, () -> q.enqueue(null));
+        assertEquals("Tried inserting null element.", ex.getMessage());
     }
 
     /**
@@ -411,12 +386,8 @@ public class ArrayQueueTest {
     public void repeatedDequeueOnEmptyAlwaysThrowsQueueEmptyException() {
         ArrayQueue<Integer> q = new ArrayQueue<>();
         for (int i = 0; i < 3; i++) {
-            try {
-                q.dequeue();
-                fail("Expected QueueEmptyException on empty queue attempt #" + i);
-            } catch (QueueEmptyException ex) {
-                assertTrue(ex.getMessage().toLowerCase().contains("empty"));
-            }
+            QueueEmptyException ex = assertThrows(QueueEmptyException.class, q::dequeue);
+            assertEquals("Tried to deque on empty queue.", ex.getMessage());
         }
     }
 
