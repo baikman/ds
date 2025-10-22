@@ -13,7 +13,7 @@ package HW5;
 * Description: This class builds a stack using a NodePositionList.
 */
 
-public class NodeListStack<E> {
+public class NodeListStack<E> implements Stack<E> {
     private NodePositionList<E> list;
 
     /**
