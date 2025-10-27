@@ -7,26 +7,88 @@ import java.util.LinkedList;
 public class MazeSolver {
 
     public static void main(String args[]) {
-        int row = Integer.parseInt(args[0]);
-        int col = Integer.parseInt(args[1]);
+        Scanner scan = new Scanner(System.in);
         
-        Queue<Integer> queue = new LinkedList<>();
+        int row = scan.nextInt();
+        int col = scan.nextInt();
+        int length = 0;
+        
+        Queue<Location> queue = new LinkedList<>();
 
-        char maze[][] = new char[row][col];
-
-        System.out.println(row + " " + col);
+        Location maze[][] = new Location[row][col];
+        Location start = new Location();
+        Location target = new Location();
+        Location parent = new Location();
 
         for (int r = 0; r < row; r++) {
-            Scanner scan = new Scanner(args[r + 2]);
-
             String next = scan.next();
+
             for (int c = 0; c < col; c++) {
-                maze[r][c] = next.charAt(c);
-                // System.out.println(maze[r][c]);
+                char curr = next.charAt(c);
+                Coordinate currCoord = new Coordinate(r, c);
+                maze[r][c] = new Location(curr, currCoord);
+                if (curr == 'S') start = new Location(maze[r][c]);
+                if (curr == 'T') target = new Location(maze[r][c]);
+            }   
+        }
+
+        scan.close();
+
+        Location curr = new Location(start);
+        
+        queue.add(curr);
+        curr.visited = true;
+        while ((!queue.isEmpty()) && (parent.coord != target.coord)) {
+            parent = queue.remove();
+            
+            if (parent.coord.row - 1 >= 0) {
+                if ((maze[parent.coord.row - 1][parent.coord.col].visited == false) && (maze[parent.coord.row - 1][parent.coord.col].type != 'X')) {
+                    queue.add(maze[parent.coord.row - 1][parent.coord.col]);
+                    maze[parent.coord.row - 1][parent.coord.col].visited = true;
+                    maze[parent.coord.row - 1][parent.coord.col].parent = parent;
+                }
+            }
+            if (parent.coord.col - 1 >= 0) {
+                if ((maze[parent.coord.row][parent.coord.col - 1].visited == false) && (maze[parent.coord.row][parent.coord.col - 1].type != 'X')) {
+                    queue.add(maze[parent.coord.row][parent.coord.col - 1]);
+                    maze[parent.coord.row][parent.coord.col - 1].visited = true;
+                    maze[parent.coord.row][parent.coord.col - 1].parent = parent;
+                }
+            }
+            if (parent.coord.row + 1 < row) {
+                if ((maze[parent.coord.row + 1][parent.coord.col].visited == false) && (maze[parent.coord.row + 1][parent.coord.col].type != 'X')) {
+                    queue.add(maze[parent.coord.row + 1][parent.coord.col]);
+                    maze[parent.coord.row + 1][parent.coord.col].visited = true;
+                    maze[parent.coord.row + 1][parent.coord.col].parent = parent;
+                }
+            }
+            if (parent.coord.col + 1 < col) {
+                if ((maze[parent.coord.row][parent.coord.col + 1].visited == false) && (maze[parent.coord.row][parent.coord.col + 1].type != 'X')) {
+                    queue.add(maze[parent.coord.row][parent.coord.col + 1]);
+                    maze[parent.coord.row][parent.coord.col + 1].visited = true;
+                    maze[parent.coord.row][parent.coord.col + 1].parent = parent;
+                }
             }
 
-            scan.close();
+            // parent.coord.printCoord();
+        }
+
+        if (parent.coord == target.coord) {
+            curr = new Location(parent);
+            while (curr.coord != start.coord) {
+                curr = curr.parent;
+                length++;
+            }
+            Coordinate path[] = new Coordinate[length + 1];
+            curr = new Location(parent);
+            for (int i = length; i >= 0; i--) {
+                path[i] = curr.coord;
+                curr = curr.parent;
+            }
+            for (int i = 0; i < length + 1; i++) path[i].printCoord();
+            System.out.println("Total distance = " + length);
+        } else {
+            System.out.println("Maze not solvable.");
         }
     }
-    
 }
