@@ -4,6 +4,18 @@ import java.util.Scanner;
 import java.util.Queue;
 import java.util.LinkedList;
 
+/**
+* This class uses a Queue to perform breadth-first-search to find the shortest solution to a maze.
+*
+* @author Brandon Aikman
+* @version 1.0
+* File: MazeSolver.java
+* Created: Oct 2025
+* Summary of Modifications: Initial version
+* ©Copyright Cedarville University, its Computer Science faculty, and the author.
+*
+* Description: This class implements a maze-solver.
+*/
 public class MazeSolver {
 
     public static void main(String args[]) {
@@ -70,7 +82,6 @@ public class MazeSolver {
                 }
             }
 
-            // parent.coord.printCoord();
         }
 
         if (parent.coord == target.coord) {
