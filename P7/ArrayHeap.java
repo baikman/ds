@@ -99,16 +99,23 @@ public class ArrayHeap extends ArrayBinaryTree implements Heap {
 
             if (right >= size) swapIdx = left;
             else {
-                if (heapComp.isGreaterThan(((Item) btArray[left].element()).key(), ((Item) btArray[right].element()).key())) swapIdx = right;
+                Item leftChild = (Item) btArray[left].element();
+                Item rightChild = (Item) btArray[right].element();
+
+                if (heapComp.isGreaterThan(leftChild.key(), rightChild.key())) swapIdx = right;
                 else swapIdx = left;
             } 
 
-            if (!heapComp.isGreaterThan(((Item) btArray[idx].element()).key(), ((Item) btArray[swapIdx].element()).key())) break;
+            Item currItem = (Item) btArray[idx].element();
+            Item swapItem = (Item) btArray[swapIdx].element();
+
+            if (!heapComp.isGreaterThan(currItem.key(), swapItem.key())) break;
+
             swap(idx, swapIdx);
             idx = swapIdx;
         }
         
-        return root.element();
+        return (Item) root.element();
     }
 
     public static void main (String[] args) {
