@@ -31,7 +31,6 @@ public class ArrayHeap extends ArrayBinaryTree implements Heap {
      */
     public void swap(int idx1, int idx2) {
         ArrayPosition temp = btArray[idx1];
-
         btArray[idx1] = btArray[idx2];
         btArray[idx2] = temp;
 
