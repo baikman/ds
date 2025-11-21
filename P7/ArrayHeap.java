@@ -122,13 +122,10 @@ public class ArrayHeap extends ArrayBinaryTree implements Heap {
 	    Comparator myComp = new IntegerComparator();
         Heap myHeap = new ArrayHeap (myComp, 8);
 
-        for (int i = 10000; i > 0; i--) {
-            myHeap.add(i, i);
-        }
+        for (int i = 10000; i > 0; i--) myHeap.add(i, i);
 
         System.out.println(myHeap.size());
         while (!myHeap.isEmpty()) {
-
             Item removedItem = (Item) myHeap.removeRoot();
             System.out.print("Key:   " + removedItem.key() + "     ");
             System.out.println("Removed " + removedItem.element());
